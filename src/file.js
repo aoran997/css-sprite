@@ -9,6 +9,7 @@ let input = document.createElement('input')
 input.type = 'file'
 input.multiple = true
 input.onchange = onChange
+input.accept = 'image/*'
 div.append(input)
 div.className = 'set-file'
 
