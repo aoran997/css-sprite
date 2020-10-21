@@ -27,9 +27,9 @@ globalThis.showResult = (res) => {
   
   fetch('http://localhost:5000/uploads', {
     method: 'post',
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
+    // headers: {
+    //   'Content-Type': 'multipart/form-data'
+    // },
     body: params
   })
 
