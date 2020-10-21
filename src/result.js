@@ -9,17 +9,30 @@ globalThis.showResult = (res) => {
     set(target, key, value) {
       target[key] = value
       if (Number(key) === res.length - 1) {
-        FORP(target, (nice) => {
-          canvas.width = nice.w
-          canvas.height = nice.h
-          nice.r.forEach(v => {
-            ctx.drawImage(imgs[v.p], v.x, v.y, v.w, v.h)
-          })
-        })
+        // FORP(target, (nice) => {
+        //   canvas.width = nice.w
+        //   canvas.height = nice.h
+        //   nice.r.forEach(v => {
+        //     ctx.drawImage(imgs[v.p], v.x, v.y, v.w, v.h)
+        //   })
+        // })
       }
       return true
     }
   })
+  let params = new FormData()
+  for (let i = 0; i < res.length; i++) {
+    params.append('files', res[i])
+  }
+  
+  fetch('http://localhost:5000/uploads', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+    body: params
+  })
+
   for (let i = 0; i < res.length; i++) {
     // result.innerText = result.innerText + '\n' + res[i].name
     let reader = new FileReader()
