@@ -7,7 +7,7 @@ module.exports = {
   entry: './main.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: '../dist'
   },
   plugins: [
     new WebpackBar(),
@@ -18,7 +18,7 @@ module.exports = {
   ],
   devServer: {
     port: '3000',
-    contentBase: './dist'
+    contentBase: '../dist'
   },
   module: {
     rules: [

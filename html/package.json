@@ -1,7 +1,7 @@
 {
   "name": "cssspritewebpack",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "watch": "webpack --watch",
     "start": "webpack serve --mode development -open",

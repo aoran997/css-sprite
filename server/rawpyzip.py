@@ -5,7 +5,7 @@ from flask_cors import CORS
 import zipfile
 import os
 app = Flask(__name__)
-pngquant.config('/usr/local/pngquant/pngquant', 70, 80, 1, 8, 'tmp.png', 1)
+pngquant.config('../pngquant-mac/pngquant', 70, 80, 1, 8, 'tmp.png', 1)
 
 
 @app.route('/uploads', methods=['GET', 'POST'])
