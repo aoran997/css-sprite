@@ -32,7 +32,7 @@ def upload():
     return response
 
 
-@app.route('/', methods: 'GET')
+@app.route('/', methods=['GET'])
 def hello():
     return 'hello'
 
