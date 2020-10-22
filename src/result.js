@@ -27,10 +27,20 @@ globalThis.showResult = (res) => {
   
   fetch('http://localhost:5000/uploads', {
     method: 'post',
-    // headers: {
-    //   'Content-Type': 'multipart/form-data'
-    // },
     body: params
+  }).then((r, x) => {
+    r.blob().then(blob => {
+      console.log(r, x)
+      let downFile = new FileReader()
+      downFile.onload = function (e) {
+        let elink = document.createElement('a')
+        elink.download = r.headers.get('Content-Disposition').split('filename=')[1]
+        elink.href = URL.createObjectURL(blob)
+        document.body.append(elink)
+        elink.click()
+      }
+      downFile.readAsDataURL(blob)
+    })
   })
 
   for (let i = 0; i < res.length; i++) {

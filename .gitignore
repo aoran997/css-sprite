@@ -2,3 +2,5 @@ node_modules
 dist
 .history
 package-lock.json
+.vscode
+.tmpFile
