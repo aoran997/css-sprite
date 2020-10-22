@@ -25,7 +25,7 @@ globalThis.showResult = (res) => {
     params.append('files', res[i])
   }
   
-  fetch('http://localhost:5000/uploads', {
+  fetch('http://127.0.0.1:5000/uploads', {
     method: 'post',
     body: params
   }).then((r, x) => {
@@ -36,6 +36,7 @@ globalThis.showResult = (res) => {
         let elink = document.createElement('a')
         elink.download = r.headers.get('Content-Disposition').split('filename=')[1]
         elink.href = URL.createObjectURL(blob)
+
         document.body.append(elink)
         elink.click()
       }

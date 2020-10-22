@@ -27,9 +27,14 @@ def upload():
     for r in os.listdir('./tmpFile/new'):
         os.remove('./tmpFile/new/' + r)
     response = make_response(send_from_directory(
-        './', 'smallImage.zip', as_attachment=True))
+        './tmpFile/download/', 'smallImage.zip', as_attachment=True))
     response.headers['Access-Control-Expose-Headers'] = 'Content-Disposition'
     return response
+
+
+@app.route('/', methods: 'GET')
+def hello():
+    return 'hello'
 
 
 if __name__ == '__main__':
@@ -42,4 +47,4 @@ if __name__ == '__main__':
     if not os.path.exists('./tmpFile/download'):
         os.mkdir('./tmpFile/download')
     CORS(app, supports_credentials=True)
-    app.run()
+    app.run(host='0.0.0.0')
