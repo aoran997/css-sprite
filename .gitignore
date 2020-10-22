@@ -3,4 +3,4 @@ dist
 .history
 package-lock.json
 .vscode
-.tmpFile
+/tmpFile
