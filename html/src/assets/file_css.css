@@ -32,6 +32,26 @@
 }
 
 .result {
+  display: flex;
+}
+
+.result .assemble_img {
   width: 70%;
-  margin: 3rem 15%;
+  float: right;
+  position: relative;
+}
+
+.result .assemble_img img {
+  width: 100%;
+}
+
+.result .assemble_img canvas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
 }
