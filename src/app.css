@@ -1,0 +1,79 @@
+body {
+  margin: 0;
+}
+
+.content {
+  margin: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.content .file-in {
+  border: 1px solid #a2aebe;
+  padding: 0.5rem;
+  position: relative;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  transition: border 0.3s;
+  flex: 1;
+}
+
+.content .file-in.active .tips,
+.content .file-in:hover .tips {
+  border-color: #4b91b1;
+  color: #4b91b1;
+}
+
+.content .file-in input {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+.upload-panel .list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload-panel .list .item {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.upload-panel .list .item .file-img {
+  margin-right: 10px;
+  height: 100%;
+}
+
+.upload-panel .list .item .close svg {
+  width: 20px;
+  height: 20px;
+  color: #a2aebe;
+}
+
+.upload-panel .list .item .close:hover svg {
+  color: #7d8794;
+}
+
+.upload-panel .list .item .name {
+  flex: 1;
+}
+
+.puzzle {
+  border: 1px solid #a2aebe;
+  padding: 0.5rem;
+  position: relative;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.puzzle #puzzle {
+  width: 100%;
+  height: 100%;
+}
