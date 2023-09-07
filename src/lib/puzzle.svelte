@@ -4,8 +4,9 @@
 
   export let puzzleHidden: boolean
   export let list: Array<{
-    w?: number
-    h?: number
+    fit: any
+    w: number
+    h: number
     img: HTMLImageElement
   }>
 
@@ -19,9 +20,15 @@
   
   afterUpdate(() => {
     let packer = new GrowingPacker()
-    let dom = document.querySelector('#puzzle')
+    let dom = document.querySelector('#puzzle') as HTMLCanvasElement
     packer.fit(list)
-    console.log(list)
+    console.log(list, packer)
+    dom.width = packer.root.w
+    dom.height = packer.root.h
+    let ctx = dom.getContext('2d')
+    for (let i = 0; i < list.length; i++) {
+        ctx?.drawImage(list[i].img, list[i].fit.x, list[i].fit.y, list[i].w, list[i].h)
+    }
   })
 </script>
 

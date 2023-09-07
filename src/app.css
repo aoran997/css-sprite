@@ -17,6 +17,23 @@ body {
   flex: 1;
 }
 
+.content .file-in .tips {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  transition: color .2s;
+  position: relative;
+}
+
+.content .file-in .tips svg {
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 0.5rem;
+}
+
 .content .file-in.active .tips,
 .content .file-in:hover .tips {
   border-color: #4b91b1;
@@ -73,7 +90,34 @@ body {
   flex: 1;
 }
 
+#puzzle {
+  background-image: repeating-linear-gradient(#eee 0 8px, transparent 0 16px), 
+  repeating-linear-gradient(90deg, #eee 0 8px, transparent 0 16px);
+  background-blend-mode: screen;
+}
+
 .puzzle #puzzle {
   width: 100%;
   height: 100%;
+}
+
+.title {
+  letter-spacing: 0.2rem;
+  background-image: -webkit-linear-gradient(left, #f86926, #E6D205 25%, #15abd1 50%, #E6D205 75%, #f86926 100%);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-background-size: 200% 100%;
+  -webkit-animation: maskedAnimation 4s infinite linear;
+  font-weight: bolder;
+  font-size: 2.5rem;
+}
+
+@keyframes maskedAnimation {
+  0% {
+      background-position: 0 0;
+  }
+
+  100% {
+      background-position: -100% 0;
+  }
 }

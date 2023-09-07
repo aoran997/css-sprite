@@ -9,7 +9,7 @@
     puzzleHidden = event.detail
   }
 
-  let list: Array<{ width?: number; height?: number; img: HTMLImageElement }> =
+  let list: Array<{ w: number; h: number; img: HTMLImageElement; fit: any }> =
     []
 
   function loadImg(img: HTMLImageElement, i: number) {
@@ -33,6 +33,7 @@
         img,
         w: size[0],
         h: size[1],
+        fit: {},
       }
     }
     list = tmp
@@ -40,8 +41,12 @@
 </script>
 
 <main>
+  <h1 class="title" style="text-align: center;">CSS Sprite</h1>
+  <p style="text-align: center;">雪碧图生成器</p>
   <div class="content">
     <FileIn on:puzzleHidden={puzzleHiddenHandle} on:fileList={fileList} />
     <Puzzle {puzzleHidden} {list} />
+  </div>
+  <div class="code">
   </div>
 </main>
