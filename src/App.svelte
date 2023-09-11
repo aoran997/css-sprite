@@ -9,7 +9,7 @@
     puzzleHidden = event.detail
   }
 
-  let list: Array<{ w: number; h: number; img: HTMLImageElement; fit: any }> =
+  let list: Array<{ w: number; h: number; img: HTMLImageElement; fit?: any }> =
     []
 
   function loadImg(img: HTMLImageElement, i: number) {
@@ -20,6 +20,42 @@
     })
   }
 
+  function styleHandle(event: CustomEvent<string>) {
+    // let styleList = event.detail.split('\n')
+    let dom = document.querySelector('#code')
+    dom?.replaceChildren()
+    let regex = new RegExp('({name: (.*?)}) ({{1})(.*)(}{1})')
+    let str = event.detail
+    let regexResult = regex.exec(str)
+    while (regexResult !== null) {
+        let divFirst = document.createElement('div')
+        let divLast = document.createElement('div')
+        let a = document.createElement('a')
+        a.innerText = `.${regexResult[2]}`
+        a.className = 'class-title'
+        a.setAttribute('title', '预览')
+        divFirst.append(a, ' ', regexResult[3])
+        divLast.innerText = regexResult[5]
+        let regexDiv = new RegExp('.*?:{1}.*?;{1}')
+        let str2 = regexResult[4]
+        let regexDivResult = regexDiv.exec(str2)
+        let divCenter = []
+        while(regexDivResult !== null) {
+            let div = document.createElement('div')
+            div.innerText = regexDivResult[0]
+            dom?.appendChild(div)
+            str2 = str2.replace(regexDivResult[0], '')
+            regexDivResult = regexDiv.exec(str2)
+            divCenter.push(div)
+        }
+        a.onclick = () => {}
+        dom?.append(divFirst, ...divCenter, divLast)
+        str = str.replace(regexResult[0], '')
+        regexResult = regex.exec(str) 
+    }
+  }
+  
+
   async function fileList(
     event: CustomEvent<Array<{ name: string; size: number; img: string }>>
   ) {
@@ -28,14 +64,18 @@
     for (let i = 0; i < event.detail.length; i++) {
       let img = new Image()
       img.src = event.detail[i].img
+      img.title = event.detail[i].name
       let size = await loadImg(img, i)
       tmp[i] = {
         img,
         w: size[0],
         h: size[1],
-        fit: {},
       }
     }
+    function sort(a: { w: number }, b: { w: number }) {
+      return b.w - a.w
+    }
+    tmp.sort(sort)
     list = tmp
   }
 </script>
@@ -45,8 +85,8 @@
   <p style="text-align: center;">雪碧图生成器</p>
   <div class="content">
     <FileIn on:puzzleHidden={puzzleHiddenHandle} on:fileList={fileList} />
-    <Puzzle {puzzleHidden} {list} />
+    <Puzzle {puzzleHidden} {list} on:styleHandle={styleHandle} />
   </div>
-  <div class="code">
-  </div>
+  <div id="code" />
+  <div id="preview" />
 </main>

@@ -70,6 +70,7 @@ class GrowingPacker {
     this.root = { x: 0, y: 0, w: w, h: h };
     for (n = 0; n < len ; n++) {
       block = blocks[n];
+      console.log(block)
       if (node = this.findNode(this.root, block.w, block.h))
         block.fit = this.splitNode(node, block.w, block.h);
       else
@@ -94,12 +95,13 @@ class GrowingPacker {
   }
 
   growNode(w: number, h: number) {
+    console.log(w, h)
     var canGrowDown  = (w <= this.root.w);
     var canGrowRight = (h <= this.root.h);
 
     var shouldGrowRight = canGrowRight && (this.root.h >= (this.root.w + w)); // attempt to keep square-ish by growing right when height is much greater than width
     var shouldGrowDown  = canGrowDown  && (this.root.w >= (this.root.h + h)); // attempt to keep square-ish by growing down  when width  is much greater than height
-
+    
     if (shouldGrowRight)
       return this.growRight(w, h);
     else if (shouldGrowDown)

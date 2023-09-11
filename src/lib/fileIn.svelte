@@ -14,8 +14,13 @@
     uploadPanel = false
     for (let i = 0; i < files.length; i++) {
       let src = URL.createObjectURL(files[i])
+      let sameName = list.filter(v => v.name === files[i].name)
+      let name = files[i].name
+      if (sameName.length) {
+        continue
+      }
       list = list.concat({
-        name: files[i].name,
+        name: name,
         size: files[i].size,
         img: src,
       })

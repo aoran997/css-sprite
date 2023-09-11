@@ -35,7 +35,7 @@ body {
 }
 
 .content .file-in.active .tips,
-.content .file-in:hover .tips {
+.content .file-in .tips:hover {
   border-color: #4b91b1;
   color: #4b91b1;
 }
@@ -88,6 +88,8 @@ body {
   position: relative;
   border-radius: 5px;
   flex: 1;
+  overflow: auto;
+  max-height: 500px;
 }
 
 #puzzle {
@@ -121,3 +123,26 @@ body {
       background-position: -100% 0;
   }
 }
+
+#code {
+  white-space: pre;
+  line-height: 17px;
+  font-size: 10px;
+  margin: 1rem;
+  border: 1px solid #a2aebe;
+  padding: 0.5rem;
+}
+
+.class-title {
+  cursor: pointer;
+  transition: color .2s, bakground .1s;
+}
+
+.class-title:hover {
+  background-color: #4b91b1;
+  color: white;
+}
+
+.截屏2022-12-14_16_50_26_png {object-fit: none;object-position:-0 0;width: 1124px; height: 666px}
+
+.截屏2023-07-04_12_16_06_png {object-fit: none;object-position:-0 -666px;width: 1104px; height: 270px}

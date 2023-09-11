@@ -19,5 +19,8 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
+    "@codemirror/lang-css": "^6.2.1",
+    "@codemirror/state": "^6.2.1",
+    "@codemirror/view": "^6.18.0"
   }
 }
