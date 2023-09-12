@@ -2,8 +2,11 @@
   import './app.css'
   import FileIn from './lib/fileIn.svelte'
   import Puzzle from './lib/puzzle.svelte'
+  import { canvasImgData } from './store'
 
   let puzzleHidden = true
+  let styleFlag = false
+  let cssStyle: any = null
 
   function puzzleHiddenHandle(event: CustomEvent) {
     puzzleHidden = event.detail
@@ -21,9 +24,8 @@
   }
 
   function styleHandle(event: CustomEvent<string>) {
-    // let styleList = event.detail.split('\n')
-    let dom = document.querySelector('#code')
-    dom?.replaceChildren()
+    styleFlag = !!event.detail
+    let dom = document.createElement('div')
     let regex = new RegExp('({name: (.*?)}) ({{1})(.*)(}{1})')
     let str = event.detail
     let regexResult = regex.exec(str)
@@ -48,11 +50,14 @@
             regexDivResult = regexDiv.exec(str2)
             divCenter.push(div)
         }
-        a.onclick = () => {}
+        a.onclick = () => {
+            console.log(canvasImgData)
+        }
         dom?.append(divFirst, ...divCenter, divLast)
         str = str.replace(regexResult[0], '')
         regexResult = regex.exec(str) 
     }
+    cssStyle = dom.outerHTML
   }
   
 
@@ -87,6 +92,10 @@
     <FileIn on:puzzleHidden={puzzleHiddenHandle} on:fileList={fileList} />
     <Puzzle {puzzleHidden} {list} on:styleHandle={styleHandle} />
   </div>
-  <div id="code" />
+  {#if styleFlag}
+  <div id="code">
+    {@html cssStyle}
+  </div>
+  {/if}
   <div id="preview" />
 </main>
