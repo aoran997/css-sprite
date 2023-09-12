@@ -1,5 +1,5 @@
-export let canvasImgData: ImageData | undefined
+export let imgSrc: string = ''
 
-export function putCanvasImageData(img?: ImageData) {
-  canvasImgData = img
+export function putCanvasImg(img: string) {
+  imgSrc = img
 }

@@ -2,11 +2,10 @@
   import './app.css'
   import FileIn from './lib/fileIn.svelte'
   import Puzzle from './lib/puzzle.svelte'
-  import { canvasImgData } from './store'
+  import { imgSrc } from './store'
 
   let puzzleHidden = true
-  let styleFlag = false
-  let cssStyle: any = null
+  let styleFlag = true
 
   function puzzleHiddenHandle(event: CustomEvent) {
     puzzleHidden = event.detail
@@ -24,42 +23,51 @@
   }
 
   function styleHandle(event: CustomEvent<string>) {
-    styleFlag = !!event.detail
-    let dom = document.createElement('div')
+    styleFlag = !event.detail
+    let dom = document.querySelector('#code')
+    dom?.replaceChildren()
     let regex = new RegExp('({name: (.*?)}) ({{1})(.*)(}{1})')
     let str = event.detail
     let regexResult = regex.exec(str)
     while (regexResult !== null) {
-        let divFirst = document.createElement('div')
-        let divLast = document.createElement('div')
-        let a = document.createElement('a')
-        a.innerText = `.${regexResult[2]}`
-        a.className = 'class-title'
-        a.setAttribute('title', '预览')
-        divFirst.append(a, ' ', regexResult[3])
-        divLast.innerText = regexResult[5]
-        let regexDiv = new RegExp('.*?:{1}.*?;{1}')
-        let str2 = regexResult[4]
-        let regexDivResult = regexDiv.exec(str2)
-        let divCenter = []
-        while(regexDivResult !== null) {
-            let div = document.createElement('div')
-            div.innerText = regexDivResult[0]
-            dom?.appendChild(div)
-            str2 = str2.replace(regexDivResult[0], '')
-            regexDivResult = regexDiv.exec(str2)
-            divCenter.push(div)
-        }
-        a.onclick = () => {
-            console.log(canvasImgData)
-        }
-        dom?.append(divFirst, ...divCenter, divLast)
-        str = str.replace(regexResult[0], '')
-        regexResult = regex.exec(str) 
+      let divFirst = document.createElement('div')
+      let divLast = document.createElement('div')
+      let a = document.createElement('a')
+      a.innerText = `.${regexResult[2]}`
+      a.className = 'class-title'
+      a.setAttribute('title', '预览')
+      divLast.innerText = regexResult[5]
+      let regexDiv = new RegExp('.*?:{1}.*?;{1}')
+      let str2 = regexResult[4]
+      let regexDivResult = regexDiv.exec(str2)
+      let divCenter: HTMLDivElement[] = []
+      while (regexDivResult !== null) {
+        let div = document.createElement('div')
+        div.innerText = regexDivResult[0]
+        dom?.appendChild(div)
+        str2 = str2.replace(regexDivResult[0], '')
+        regexDivResult = regexDiv.exec(str2)
+        divCenter.push(div)
+      }
+      let className = regexResult[2]
+      a.onclick = () => {
+        let img = new Image()
+        img.src = imgSrc
+        let style = ''
+        divCenter.forEach(v => {
+            style += v.innerText
+        })
+        img.style.cssText = style
+        let imgTag = document.createElement('div')
+        imgTag.innerText = `<img src="example" class="${className}" >`
+        document.querySelector('#preview')?.replaceChildren(imgTag, img)
+      }
+      divFirst.append(a, ' ', regexResult[3])
+      dom?.append(divFirst, ...divCenter, divLast)
+      str = str.replace(regexResult[0], '')
+      regexResult = regex.exec(str)
     }
-    cssStyle = dom.outerHTML
   }
-  
 
   async function fileList(
     event: CustomEvent<Array<{ name: string; size: number; img: string }>>
@@ -92,10 +100,6 @@
     <FileIn on:puzzleHidden={puzzleHiddenHandle} on:fileList={fileList} />
     <Puzzle {puzzleHidden} {list} on:styleHandle={styleHandle} />
   </div>
-  {#if styleFlag}
-  <div id="code">
-    {@html cssStyle}
-  </div>
-  {/if}
+  <div id="code" hidden={styleFlag} />
   <div id="preview" />
 </main>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte'
   import GrowingPacker from '../utils/packer.growing'
-  import { canvasImgData, putCanvasImageData } from '../store'
+  import { putCanvasImg } from '../store'
 
   export let puzzleHidden: boolean
   export let list: Array<{
@@ -27,9 +27,8 @@
         ctx?.drawImage(list[i].img, list[i].fit.x, list[i].fit.y, list[i].w, list[i].h)
         sty += `{name: ${list[i].img.title}} {  object-fit: none;  object-position:-${list[i].fit.x}px -${list[i].fit.y}px;  width: ${list[i].w}px;  height: ${list[i].h}px;}\n`
     }
-    console.log(0, 0, packer.root.w, packer.root.h)
-    if (!puzzleHidden) {
-        putCanvasImageData(ctx?.getImageData(0, 0, packer.root.w, packer.root.h))
+    if (list.length) {
+        putCanvasImg(dom.toDataURL())
     }
     dispatch('styleHandle', sty)
   })

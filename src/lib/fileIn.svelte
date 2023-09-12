@@ -8,17 +8,27 @@
 
   const dispatch = createEventDispatcher()
 
+  function load(reader: FileReader) {
+    return new Promise<string>((resolve) => {
+      reader.onload = () => {
+        resolve(reader.result as string)
+      }
+    })
+  }
+
   async function change(ev: Event) {
     let input = ev.target as HTMLInputElement
     let files = input.files!
     uploadPanel = false
     for (let i = 0; i < files.length; i++) {
-      let src = URL.createObjectURL(files[i])
-      let sameName = list.filter(v => v.name === files[i].name)
+      let sameName = list.filter((v) => v.name === files[i].name)
       let name = files[i].name
       if (sameName.length) {
         continue
       }
+      var reader = new FileReader()
+      reader.readAsDataURL(files[i])
+      let src = await load(reader)
       list = list.concat({
         name: name,
         size: files[i].size,

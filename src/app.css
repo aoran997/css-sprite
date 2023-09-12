@@ -154,16 +154,6 @@ body {
   color: white;
 }
 
-.截屏2022-12-14_16_50_26_png {
-  object-fit: none;
-  object-position: -0 0;
-  width: 1124px;
-  height: 666px;
-}
-
-.截屏2023-07-04_12_16_06_png {
-  object-fit: none;
-  object-position: -0 -666px;
-  width: 1104px;
-  height: 270px;
+#preview {
+  margin: 1rem;
 }
