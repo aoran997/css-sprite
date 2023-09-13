@@ -14,12 +14,6 @@ body {
   transition: border 0.3s;
 }
 
-.content .file-in.active,
-.content .file-in:hover {
-  border-color: #4b91b1;
-  color: #4b91b1;
-}
-
 .content .file-in input {
   opacity: 0;
   position: absolute;
