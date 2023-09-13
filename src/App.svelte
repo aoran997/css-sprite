@@ -2,6 +2,7 @@
   import './app.css'
   import FileIn from './lib/fileIn.svelte'
   import Puzzle from './lib/puzzle.svelte'
+  import Title from './lib/title.svelte'
   import { imgSrc } from './store'
 
   let puzzleHidden = true
@@ -108,15 +109,21 @@
 </script>
 
 <main>
-  <h1 class="title" style="text-align: center;">CSS Sprite</h1>
-  <p style="text-align: center;">雪碧图生成器</p>
+  <div class="page-title">
+    <Title />
+  </div>
   <div class="content">
     <FileIn on:puzzleHidden={puzzleHiddenHandle} on:fileList={fileList} />
     <Puzzle {puzzleHidden} {list} on:styleHandle={styleHandle} />
   </div>
   <div id="code" hidden={styleFlag}>
     <div class="styles" />
-    <button class="copy" on:click={copy} on:mouseenter={() => codeButtonStatus = 'normal'} on:touchstart={() => codeButtonStatus = 'normal'}>
+    <button
+      class="copy"
+      on:click={copy}
+      on:mouseenter={() => (codeButtonStatus = 'normal')}
+      on:touchstart={() => (codeButtonStatus = 'normal')}
+    >
       <div>Copy</div>
       <div class="icon">
         {#if codeButtonStatus === 'normal'}
@@ -189,3 +196,9 @@
   </div>
   <div id="preview" />
 </main>
+
+<style scoped>
+  .page-title {
+    height: 3rem;
+  }
+</style>

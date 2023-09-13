@@ -1,6 +1,11 @@
 :root {
   --theme-color: #4b91b1;
   --normal-color: #a2aebe;
+  --padding: 1rem;
+}
+
+html {
+  background-color: #212121;
 }
 
 body {
