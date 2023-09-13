@@ -3,6 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": {
+    "name": "aoran997",
+    "email": "z657835945@live.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aoran997/css-sprite.git"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
