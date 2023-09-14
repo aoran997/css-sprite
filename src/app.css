@@ -1,7 +1,9 @@
 :root {
-  --theme-color: #4b91b1;
+  --theme-color: #29B6F6;
+  --theme-color-1: #039BE5;
   --normal-color: #a2aebe;
   --padding: 1rem;
+  --border-color: #757575;
 }
 
 html {
@@ -12,11 +14,6 @@ body {
   margin: 0;
 }
 
-.content {
-  margin: 1rem;
-  display: flex;
-  gap: 0.5rem;
-}
 .content .file-in {
   border: 1px solid var(--normal-color);
   padding: 0.5rem;
@@ -95,45 +92,6 @@ body {
 
 .upload-panel .list .item .name {
   flex: 1;
-}
-
-.puzzle {
-  border: 1px solid var(--normal-color);
-  padding: 0.5rem;
-  position: relative;
-  border-radius: 5px;
-  flex: 1;
-  overflow: auto;
-  max-height: 500px;
-}
-
-#puzzle {
-  background-image: repeating-linear-gradient(#eee 0 8px, transparent 0 16px),
-    repeating-linear-gradient(90deg, #eee 0 8px, transparent 0 16px);
-  background-blend-mode: screen;
-}
-
-.puzzle #puzzle {
-  width: 100%;
-  height: 100%;
-}
-
-.title {
-  letter-spacing: 0.2rem;
-  background-image: -webkit-linear-gradient(
-    left,
-    #f86926,
-    #e6d205 25%,
-    #15abd1 50%,
-    #e6d205 75%,
-    #f86926 100%
-  );
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text;
-  -webkit-background-size: 200% 100%;
-  -webkit-animation: maskedAnimation 4s infinite linear;
-  font-weight: bolder;
-  font-size: 2.5rem;
 }
 
 @keyframes maskedAnimation {

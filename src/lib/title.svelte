@@ -9,13 +9,10 @@
     line-height: 2rem;
     padding: calc(var(--padding) / 4) var(--padding);
     color: #E0E0E0;
-    border-bottom: 1px solid #757575;
+    border-bottom: 1px solid var(--border-color);
     font-size: 1.1rem;
     display: flex;
     align-items: center;
-  }
-
-  .titls {
   }
 
   .tips {

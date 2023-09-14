@@ -1,7 +1,8 @@
 <script lang="ts">
   import { afterUpdate, beforeUpdate, createEventDispatcher } from 'svelte'
   import GrowingPacker from '../utils/packer.growing'
-  import { putCanvasImg } from '../store'
+  import { canvasSpan, putCanvasImg } from '../store'
+  import { get } from 'svelte/store'
 
   export let puzzleHidden: boolean
   export let list: Array<{
@@ -16,7 +17,8 @@
   afterUpdate(() => {
     let packer = new GrowingPacker()
     let dom = document.querySelector('#puzzle') as HTMLCanvasElement
-    packer.fit(list)
+    let span = get(canvasSpan)
+    packer.fit(list, span)
     dom.width = packer.root.w
     dom.height = packer.root.h
     dom.style.width = packer.root.w + 'px'

@@ -62,17 +62,23 @@ Example:
 class GrowingPacker {
   root: any
   node: any
+  span: number = 0
+  maxWidth = 0
+  maxHeight = 0
 
-  fit(blocks: string | any[]) {
+  fit(blocks: string | any[], span: number) {
+    this.span = span
     var n, node, block, len = blocks.length;
     var w = len > 0 ? blocks[0].w : 0;
     var h = len > 0 ? blocks[0].h : 0;
+    this.maxWidth = w
+    this.maxHeight = h
     this.root = { x: 0, y: 0, w: w, h: h };
     for (n = 0; n < len ; n++) {
       block = blocks[n];
-      console.log(block)
-      if (node = this.findNode(this.root, block.w, block.h))
+      if (node = this.findNode(this.root, block.w, block.h)) {
         block.fit = this.splitNode(node, block.w, block.h);
+      }
       else
         block.fit = this.growNode(block.w, block.h);
     }
@@ -95,7 +101,6 @@ class GrowingPacker {
   }
 
   growNode(w: number, h: number) {
-    console.log(w, h)
     var canGrowDown  = (w <= this.root.w);
     var canGrowRight = (h <= this.root.h);
 
@@ -119,13 +124,14 @@ class GrowingPacker {
       used: true,
       x: 0,
       y: 0,
-      w: this.root.w + w,
+      w: this.maxWidth + w,
       h: this.root.h,
       down: this.root,
       right: { x: this.root.w, y: 0, w: w, h: this.root.h }
     };
-    if (this.node = this.findNode(this.root, w, h))
+    if (this.node = this.findNode(this.root, w, h)) {
       return this.splitNode(this.node, w, h);
+    }
     else
       return null;
   }
@@ -136,12 +142,13 @@ class GrowingPacker {
       x: 0,
       y: 0,
       w: this.root.w,
-      h: this.root.h + h,
+      h: this.maxHeight + h,
       down:  { x: 0, y: this.root.h, w: this.root.w, h: h },
       right: this.root
     };
-    if (this.node = this.findNode(this.root, w, h))
+    if (this.node = this.findNode(this.root, w, h)) {
       return this.splitNode(this.node, w, h);
+    }
     else
       return null;
   }

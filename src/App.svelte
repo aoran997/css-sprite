@@ -1,7 +1,10 @@
 <script lang="ts">
   import './app.css'
+  import CenterContent from './lib/centerContent.svelte'
   import FileIn from './lib/fileIn.svelte'
+  import LeftContent from './lib/leftContent.svelte'
   import Puzzle from './lib/puzzle.svelte'
+  import RightContent from './lib/rightContent.svelte'
   import Title from './lib/title.svelte'
   import { imgSrc } from './store'
 
@@ -113,10 +116,15 @@
     <Title />
   </div>
   <div class="content">
+    <LeftContent />
+    <CenterContent />
+    <RightContent />
+  </div>
+  <!-- <div class="content">
     <FileIn on:puzzleHidden={puzzleHiddenHandle} on:fileList={fileList} />
     <Puzzle {puzzleHidden} {list} on:styleHandle={styleHandle} />
-  </div>
-  <div id="code" hidden={styleFlag}>
+  </div> -->
+  <!-- <div id="code" hidden={styleFlag}>
     <div class="styles" />
     <button
       class="copy"
@@ -194,11 +202,16 @@
       </div>
     </button>
   </div>
-  <div id="preview" />
+  <div id="preview" /> -->
 </main>
 
 <style scoped>
   .page-title {
     height: 3rem;
+  }
+
+  .content {
+    height: calc(100vh - 3rem);
+    display: flex;
   }
 </style>
