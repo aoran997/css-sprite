@@ -1,7 +1,17 @@
-import { writable, type Writable } from 'svelte/store';
+import { get, writable, type Writable } from 'svelte/store'
 
-export let uploadedList: Writable<Array<{ img: HTMLImageElement; w: number; h: number, fit?: any }>> = writable([])
-export let canvasSpan = writable(50)
+export interface RendererData {
+  img: HTMLImageElement
+  w: number
+  h: number
+  fit?: any
+  rw: number
+  rh: number
+}
+
+export let uploadedList: Writable<Array<RendererData>> = writable([])
+export let canvasSpan = writable(0)
+
 function loadImg(img: HTMLImageElement, i: number) {
   return new Promise<number[]>((resolve) => {
     img.onload = () => {
@@ -10,8 +20,10 @@ function loadImg(img: HTMLImageElement, i: number) {
   })
 }
 
-export async function setUploadedList(list: Array<{ name: string; size: number; img: string }>) {
-  let tmp: Array<{ img: HTMLImageElement; w: number; h: number, fit?: any }> = []
+export async function setUploadedList(
+  list: Array<{ name: string; size: number; img: string }>
+) {
+  let tmp: Array<RendererData> = []
   for (let i = 0; i < list.length; i++) {
     let img = new Image()
     img.src = list[i].img
@@ -21,6 +33,8 @@ export async function setUploadedList(list: Array<{ name: string; size: number; 
       img,
       w: size[0],
       h: size[1],
+      rw: size[0],
+      rh: size[1],
     }
   }
   function sort(a: { w: number }, b: { w: number }) {

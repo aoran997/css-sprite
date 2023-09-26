@@ -1,29 +1,29 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
-  import { canvasSpan, putCanvasImg, uploadedList } from '../store'
+  import { canvasSpan, putCanvasImg, uploadedList, type RendererData } from '../store'
   import GrowingPacker from '../utils/packer.growing'
   import { get } from 'svelte/store'
   const dispatch = createEventDispatcher()
 
-  let list: {
-    img: HTMLImageElement
-    w: number
-    h: number
-    fit?: any
-  }[] = []
+  let list: RendererData[] = []
 
   function draw() {
     let packer = new GrowingPacker()
     let dom = document.querySelector('#puzzle') as HTMLCanvasElement
-    console.log(list)
     if (!list.length) {
       return
     }
-    let span = get(canvasSpan)
-    packer.fit(list, Number(span))
-    console.log(list, packer)
-    dom.width = packer.root.w
-    dom.height = packer.root.h
+    let span = Number(get(canvasSpan))
+    let tmp = list.map(v => {
+        return {
+            ...v,
+            w: v.w + span,
+            h: v.h + span
+        }
+    })
+    packer.fit(tmp, span)
+    dom.width = Number(packer.root.w) - span
+    dom.height = Number(packer.root.h) - span
     let [parentWidth, parentHeight] = [
       dom.parentElement?.clientWidth! - 20,
       dom.parentElement?.clientHeight! - 20,
@@ -45,17 +45,18 @@
     dom.style.zoom = flag
     let ctx = dom.getContext('2d')
     let sty = ''
-    for (let i = 0; i < list.length; i++) {
+    console.log(tmp)
+    for (let i = 0; i < tmp.length; i++) {
       ctx?.drawImage(
-        list[i].img,
-        list[i].fit.x,
-        list[i].fit.y,
-        list[i].w,
-        list[i].h
+        tmp[i].img,
+        tmp[i].fit.x,
+        tmp[i].fit.y,
+        tmp[i].rw,
+        tmp[i].rh
       )
-      sty += `{name: ${list[i].img.title}} {  object-fit: none;  object-position:-${list[i].fit.x}px -${list[i].fit.y}px;  width: ${list[i].w}px;  height: ${list[i].h}px;}\n`
+      sty += `{name: ${tmp[i].img.title}} {  object-fit: none;  object-position:-${tmp[i].fit.x}px -${tmp[i].fit.y}px;  width: ${tmp[i].w}px;  height: ${tmp[i].h}px;}\n`
     }
-    if (list.length) {
+    if (tmp.length) {
       putCanvasImg(dom.toDataURL())
     }
     dispatch('styleHandle', sty)
@@ -66,9 +67,9 @@
     draw()
   })
 
-//   canvasSpan.subscribe(value => {
-//     draw()
-//   })
+  canvasSpan.subscribe(value => {
+    draw()
+  })
 </script>
 
 <div class="center-content">
