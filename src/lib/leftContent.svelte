@@ -102,6 +102,7 @@
     border-radius: 10px;
     overflow: hidden;
     gap: 5px;
+    font-size: 14px;
   }
 
   .tips:hover,

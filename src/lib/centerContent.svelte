@@ -13,6 +13,18 @@
     if (!list.length) {
       return
     }
+    let size = 1
+    dom.onwheel = (e) => {
+        if (e.deltaY > 0) {
+            size += 0.1
+        } else {
+            size -= 0.1
+        }
+        if (size < 0.5) {
+            size = 0.5
+        }
+        dom.style.transform = `scale(${size})`
+    }
     let span = Number(get(canvasSpan))
     let tmp = list.map(v => {
         return {
