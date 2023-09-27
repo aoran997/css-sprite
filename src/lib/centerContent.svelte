@@ -1,11 +1,18 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
-  import { canvasSpan, putCanvasImg, uploadedList, type RendererData } from '../store'
+  import {
+    canvasSpan,
+    putCanvasImg,
+    uploadedList,
+    type RendererData,
+  } from '../store'
   import GrowingPacker from '../utils/packer.growing'
   import { get } from 'svelte/store'
+  import { scale } from 'svelte/transition'
   const dispatch = createEventDispatcher()
 
   let list: RendererData[] = []
+  let canvasSize = 1
 
   function draw() {
     let packer = new GrowingPacker()
@@ -13,25 +20,96 @@
     if (!list.length) {
       return
     }
-    let size = 1
+    canvasSize = 1
+    let size = canvasSize
+    let lastX = 0
+    let lastY = 0
     dom.onwheel = (e) => {
-        if (e.deltaY > 0) {
-            size += 0.1
-        } else {
-            size -= 0.1
+      if (e.deltaY > 0) {
+        size += 0.1
+      } else {
+        size -= 0.1
+      }
+      if (size < 0.5) {
+        size = 0.5
+      }
+      if (size >= 5) {
+        size = 5
+      }
+      if (size <= 1) {
+        lastX = 0
+        lastY = 0
+      }
+      dom.style.transform = `scale(${size}) translateX(${lastX / size}px) translateY(${lastY / size}px)`
+      canvasSize = size
+    }
+    dom.style.transform = ''
+    let draging = false
+    dom.onmousedown = (md: MouseEvent) => {
+      draging = true
+      md.preventDefault()
+      let offsetW = (dom.clientWidth * size - dom.clientWidth) / 2
+      let offsetY = (dom.clientHeight * size - dom.clientHeight) / 2
+      if (canvasSize <= 1) {
+        return
+      }
+      let startX = md.clientX - lastX
+      let startY = md.clientY - lastY
+      function mousemove(mm: MouseEvent) {
+        lastX = mm.clientX - startX
+        lastY = mm.clientY - startY
+        dom.style.transform = `scale(${size}) translateX(${lastX / size}px) translateY(${lastY / size}px)`
+      }
+      document.addEventListener('mousemove', mousemove)
+      function recover() {
+        if (draging) {
+          return
         }
-        if (size < 0.5) {
-            size = 0.5
+        let tmpX = Math.abs(lastX)
+        let flagX = false
+        if (tmpX > offsetW) {
+          tmpX = tmpX - (tmpX - offsetW) / 10
+          flagX = tmpX - offsetW <= 1
+          if (lastX < 0) {
+            tmpX = -tmpX
+          }
+          lastX = tmpX
         }
-        dom.style.transform = `scale(${size})`
+
+        let tmpY = Math.abs(lastY)
+        let flagY = false
+        if (tmpY > offsetY) {
+          tmpY = tmpY - (tmpY - offsetY) / 10
+          flagY = tmpY - offsetY <= 1
+          if (lastY < 0) {
+            tmpY = -tmpY
+          }
+          lastY = tmpY
+        }
+
+        dom.style.transform = `scale(${size}) translateX(${tmpX / size}px) translateY(${tmpY / size}px)`
+        if (flagX && flagY) {
+          return
+        }
+        requestAnimationFrame(recover)
+      }
+      window.addEventListener(
+        'mouseup',
+        () => {
+          draging = false
+          document.removeEventListener('mousemove', mousemove)
+          recover()
+        },
+        { once: true }
+      )
     }
     let span = Number(get(canvasSpan))
-    let tmp = list.map(v => {
-        return {
-            ...v,
-            w: v.w + span,
-            h: v.h + span
-        }
+    let tmp = list.map((v) => {
+      return {
+        ...v,
+        w: v.w + span,
+        h: v.h + span,
+      }
     })
     packer.fit(tmp, span)
     dom.width = Number(packer.root.w) - span
@@ -71,7 +149,52 @@
     if (tmp.length) {
       putCanvasImg(dom.toDataURL())
     }
-    dispatch('styleHandle', sty)
+    styleHandle(sty)
+  }
+
+  function styleHandle(str: string) {
+    let dom = document.querySelector('.style .content')
+    dom?.replaceChildren()
+    let regex = new RegExp('({name: (.*?)}) ({{1})(.*)(}{1})')
+    let regexResult = regex.exec(str)
+    while (regexResult !== null) {
+      let divFirst = document.createElement('div')
+      let divLast = document.createElement('div')
+      let a = document.createElement('a')
+      a.innerText = `.${regexResult[2]}`
+      a.className = 'class-title'
+      a.setAttribute('title', '预览')
+      divLast.innerText = regexResult[5]
+      let regexDiv = new RegExp('.*?:{1}.*?;{1}')
+      let str2 = regexResult[4]
+      let regexDivResult = regexDiv.exec(str2)
+      let divCenter: HTMLDivElement[] = []
+      while (regexDivResult !== null) {
+        let div = document.createElement('div')
+        div.innerText = regexDivResult[0]
+        dom?.appendChild(div)
+        str2 = str2.replace(regexDivResult[0], '')
+        regexDivResult = regexDiv.exec(str2)
+        divCenter.push(div)
+      }
+      let className = regexResult[2]
+      a.onclick = () => {
+        // let img = new Image()
+        // img.src = imgSrc
+        // let style = ''
+        // divCenter.forEach((v) => {
+        //   style += v.innerText
+        // })
+        // img.style.cssText = style
+        // let imgTag = document.createElement('div')
+        // imgTag.innerText = `<img src="example" class="${className}" >`
+        // document.querySelector('#preview')?.replaceChildren(imgTag, img)
+      }
+      divFirst.append(a, ' ', regexResult[3])
+      dom?.append(divFirst, ...divCenter, divLast)
+      str = str.replace(regexResult[0], '')
+      regexResult = regex.exec(str)
+    }
   }
 
   uploadedList.subscribe((value) => {
@@ -79,14 +202,18 @@
     draw()
   })
 
-  canvasSpan.subscribe(value => {
+  canvasSpan.subscribe((value) => {
     draw()
   })
 </script>
 
 <div class="center-content">
   <div class="puzzle">
-    <canvas id="puzzle" />
+    <canvas id="puzzle" class:scale={canvasSize > 1} />
+  </div>
+  <div class="style">
+    <div class="title">Css</div>
+    <div class="content"></div>
   </div>
 </div>
 
@@ -94,11 +221,15 @@
   .center-content {
     flex: 6;
     overflow: hidden;
+    position: relative;
   }
   .puzzle {
     padding: 10px;
     width: calc(100% - 20px);
     height: calc(100% - 20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   #puzzle {
     background-image: conic-gradient(
@@ -110,5 +241,38 @@
     background-size: 16px 16px;
     width: 0;
     height: 0;
+  }
+
+  #puzzle.scale {
+    cursor: grab;
+  }
+  #puzzle.scale:active {
+    cursor: grabbing;
+  }
+
+  .style {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding: 0 10px;
+    bottom: 0;
+  }
+
+  .style .title {
+    background-color: #2b2e36;
+    color: #e5e5e5;
+    display: inline-block;
+    padding: 2px 15px 25px 15px;
+    font-size: 14px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    transform: skew(2deg) translateY(21px);
+    transition: transform .2s;
+    cursor: pointer;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .style .title:hover {
+    transform: skew(2deg) translateY(17px);
   }
 </style>
