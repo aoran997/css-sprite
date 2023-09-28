@@ -28,7 +28,7 @@ let needWrite = ['/', '/index.html']
   }))
   
   
-  app.listen(80)
+  app.listen(3000)
   
-  console.log('server start:80')
+  console.log('server start:3000')
 // })
