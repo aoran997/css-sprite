@@ -1,10 +1,17 @@
 <script lang="ts">
-  import { canvasSpan } from '../store'
+  import { canvasSpan, imgSrc } from '../store'
   import Icon from './icon.svelte'
 
     let span = 0
     function change() {
         canvasSpan.set(span)
+    }
+
+    function downloadImg() {
+        let a = document.createElement('a')
+        a.download = 'sprite.png'
+        a.href = imgSrc
+        a.click()
     }
 </script>
 
@@ -13,7 +20,7 @@
     <div class="title">span</div>
     <input type="text" bind:value={span} on:change={change}/>
   </label>
-  <button>
+  <button on:click={downloadImg}>
     <div>export</div>
     <Icon name="download" style=""/>
   </button>

@@ -8,11 +8,10 @@
   } from '../store'
   import GrowingPacker from '../utils/packer.growing'
   import { get } from 'svelte/store'
-  import { scale } from 'svelte/transition'
-  const dispatch = createEventDispatcher()
 
   let list: RendererData[] = []
   let canvasSize = 1
+  let showStyle = false
 
   function draw() {
     let packer = new GrowingPacker()
@@ -144,7 +143,9 @@
         tmp[i].rw,
         tmp[i].rh
       )
-      sty += `{name: ${tmp[i].img.title}} {  object-fit: none;  object-position:-${tmp[i].fit.x}px -${tmp[i].fit.y}px;  width: ${tmp[i].w}px;  height: ${tmp[i].h}px;}\n`
+      let title = tmp[i].img.title
+      title = title.replaceAll('.', '_').replaceAll(' ', '_')
+      sty += `{name: ${title}} {  object-fit: none;  object-position:-${tmp[i].fit.x}px -${tmp[i].fit.y}px;  width: ${tmp[i].w}px;  height: ${tmp[i].h}px;}\n`
     }
     if (tmp.length) {
       putCanvasImg(dom.toDataURL())
@@ -205,6 +206,10 @@
   canvasSpan.subscribe((value) => {
     draw()
   })
+
+  function showCss() {
+    showStyle = !showStyle
+  }
 </script>
 
 <div class="center-content">
@@ -212,8 +217,10 @@
     <canvas id="puzzle" class:scale={canvasSize > 1} />
   </div>
   <div class="style">
-    <div class="title">Css</div>
-    <div class="content"></div>
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div class="title" on:click={showCss}>Css</div>
+    <div class="content" style={`height:${showStyle ? '300px' : '0'}; padding: ${showStyle ? '10px': '0 10px'}`}></div>
   </div>
 </div>
 
@@ -254,7 +261,6 @@
     position: absolute;
     left: 0;
     right: 0;
-    padding: 0 10px;
     bottom: 0;
   }
 
@@ -270,9 +276,32 @@
     transition: transform .2s;
     cursor: pointer;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    margin: 0 10px
   }
 
   .style .title:hover {
     transform: skew(2deg) translateY(17px);
+  }
+
+  .style .content {
+    background: #2b2e36;
+    z-index: 2;
+    position: relative;
+    color: #d8d8d8;
+    padding: 0 10px;
+    overflow: auto;
+    height: 0;
+    transition: height .2s;
+    white-space: pre-wrap;
+  }
+
+  .style .content::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .style .content::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: rgb(221, 222, 224);
+    transition: 0.3s ease-in-out;
   }
 </style>
