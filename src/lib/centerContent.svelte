@@ -225,7 +225,7 @@
   <div class="style">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div class="title" on:click={showCss} hidden={havCss}>Css</div>
+    <div class="title" on:click={showCss} style={!havCss ? 'none' : ''}>Css</div>
     <div class="content" style={`height:${showStyle ? '300px' : '0'}; padding: ${showStyle ? '10px': '0 10px'}`}></div>
   </div>
 </div>
