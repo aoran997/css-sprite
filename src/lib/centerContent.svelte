@@ -12,6 +12,7 @@
   let list: RendererData[] = []
   let canvasSize = 1
   let showStyle = false
+  let havCss = false
 
   function draw() {
     let packer = new GrowingPacker()
@@ -154,6 +155,11 @@
   }
 
   function styleHandle(str: string) {
+    if (str.length) {
+        havCss = true
+    } else {
+        havCss = false
+    }
     let dom = document.querySelector('.style .content')
     dom?.replaceChildren()
     let regex = new RegExp('({name: (.*?)}) ({{1})(.*)(}{1})')
@@ -219,7 +225,7 @@
   <div class="style">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div class="title" on:click={showCss}>Css</div>
+    <div class="title" on:click={showCss} hidden={havCss}>Css</div>
     <div class="content" style={`height:${showStyle ? '300px' : '0'}; padding: ${showStyle ? '10px': '0 10px'}`}></div>
   </div>
 </div>
