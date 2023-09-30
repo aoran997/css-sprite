@@ -56,7 +56,7 @@
 </script>
 
 <div class="left-content">
-  <div class="tips" class:active={draging}>
+  <button class="tips" class:active={draging}>
     <Icon name="upload" style="font-size: 20px;" />
     点击或拖拽上传文件
     <input
@@ -70,7 +70,7 @@
       on:dragleave={dragleave}
       on:drop={drop}
     />
-  </div>
+  </button>
   {#if uploadPanel}
     <div class="upload-panel">
       {#each list as { name, size, img }, i}
@@ -87,28 +87,6 @@
     height: 100%;
     border-right: 1px solid var(--border-color);
     flex: 2;
-  }
-
-  .tips {
-    color: white;
-    position: relative;
-    border: 1px solid var(--border-color);
-    margin: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: calc(100% - 10px);
-    height: 60px;
-    border-radius: 10px;
-    overflow: hidden;
-    gap: 5px;
-    font-size: 14px;
-  }
-
-  .tips:hover,
-  .tips.active {
-    color: var(--theme-color);
-    border-color: var(--theme-color-1);
   }
 
   input {

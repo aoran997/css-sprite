@@ -17,7 +17,7 @@ let needWrite = ['/', '/index.html']
         ip = ip.substring(7)
       }
       // db.exec(`insert into log (ip, time) values ('${ip}', '${new Date().getTime()}')`)
-      console.log(ip, new Date().toLocaleString())
+      console.log(ctx.URL.href, ip, new Date().toLocaleString())
     }
     await next();
   });
