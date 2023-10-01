@@ -44,6 +44,12 @@
     input.value = ''
     setUploadedList(list)
   }
+  function buttonClick(event: MouseEvent) {
+    let dom = event.target as HTMLElement
+    if (dom.tagName === 'BUTTON') {
+        dom.querySelector('input').click()
+    }
+  }
   function dragenter() {
     draging = true
   }
@@ -56,8 +62,8 @@
 </script>
 
 <div class="left-content">
-  <button class="tips" class:active={draging}>
-    <Icon name="upload" style="font-size: 20px;" />
+  <button class="tips" class:active={draging} on:click={(event) => buttonClick(event)}>
+    <Icon name="upload" style="font-size: 20px;"/>
     点击或拖拽上传文件
     <input
       type="file"
