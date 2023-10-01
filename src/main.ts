@@ -18,7 +18,6 @@ window.addEventListener('click', function (event) {
       pointer.style.opacity = `1`
       pointer.style.transform = `scale(${scale})`
       pointer.addEventListener('transitionend', (e) => {
-        console.log(e)
         if (e.propertyName === 'opacity') {
           pointer.style.opacity = `0`
         }
