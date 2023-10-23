@@ -44,8 +44,8 @@ export async function setUploadedList(
   uploadedList.set(tmp)
 }
 
-export let imgSrc: string = ''
+export let imgSrc = writable('')
 
 export function putCanvasImg(img: string) {
-  imgSrc = img
+  imgSrc.set(img)
 }

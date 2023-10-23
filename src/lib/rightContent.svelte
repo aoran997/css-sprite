@@ -7,11 +7,17 @@
     canvasSpan.set(span)
   }
 
+  let src = ''
+
+  imgSrc.subscribe((img) => {
+    src = img
+  })
+
   function downloadImg() {
     if (imgSrc) {
       let a = document.createElement('a')
       a.download = 'sprite.png'
-      a.href = imgSrc
+      a.href = src
       a.click()
     }
   }
@@ -22,7 +28,7 @@
     <div class="title">span</div>
     <input type="text" bind:value={span} on:change={change} />
   </label>
-  <button on:click={downloadImg} disabled={!imgSrc}>
+  <button on:click={downloadImg} disabled={!src}>
     <div>export</div>
     <Icon name="download" style="" />
   </button>

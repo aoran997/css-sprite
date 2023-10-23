@@ -166,7 +166,7 @@
       }px;}\n`
     }
     if (tmp.length) {
-      putCanvasImg(dom.toDataURL())
+        putCanvasImg(dom.toDataURL())
     }
     styleHandle(sty)
   }
