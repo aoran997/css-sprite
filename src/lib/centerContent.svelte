@@ -149,7 +149,6 @@
     //@ts-ignore
     dom.style.zoom = flag
     let sty = ''
-    console.log(tmp)
     for (let i = 0; i < tmp.length; i++) {
       ctx?.drawImage(
         tmp[i].img,

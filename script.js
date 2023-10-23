@@ -4,7 +4,7 @@
 let fileIn = document.querySelector('#in')
 
 fileIn.addEventListener('change', function (ev) {
-  console.log(fileIn.files)
+  // console.log(fileIn.files)
 })
 
 fileIn.addEventListener('dragenter', function (ev) {
