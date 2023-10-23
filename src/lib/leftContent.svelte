@@ -20,6 +20,7 @@
     if (!list.length) {
       uploadPanel = false
     }
+    setUploadedList(list)
   }
 
   async function change(ev: Event) {

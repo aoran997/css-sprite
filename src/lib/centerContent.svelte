@@ -17,7 +17,16 @@
   function draw() {
     let packer = new GrowingPacker()
     let dom = document.querySelector('#puzzle') as HTMLCanvasElement
+    if (!dom) {
+      return
+    }
+    let ctx = dom.getContext('2d')
     if (!list.length) {
+      ctx.clearRect(0, 0, dom.width, dom.height)
+      dom.style.width = '0'
+      dom.style.height = '0'
+      canvasSize = 0
+      havCss = false
       return
     }
     canvasSize = 1
@@ -40,7 +49,9 @@
         lastX = 0
         lastY = 0
       }
-      dom.style.transform = `scale(${size}) translateX(${lastX / size}px) translateY(${lastY / size}px)`
+      dom.style.transform = `scale(${size}) translateX(${
+        lastX / size
+      }px) translateY(${lastY / size}px)`
       canvasSize = size
     }
     dom.style.transform = ''
@@ -58,7 +69,9 @@
       function mousemove(mm: MouseEvent) {
         lastX = mm.clientX - startX
         lastY = mm.clientY - startY
-        dom.style.transform = `scale(${size}) translateX(${lastX / size}px) translateY(${lastY / size}px)`
+        dom.style.transform = `scale(${size}) translateX(${
+          lastX / size
+        }px) translateY(${lastY / size}px)`
       }
       document.addEventListener('mousemove', mousemove)
       function recover() {
@@ -87,7 +100,9 @@
           lastY = tmpY
         }
 
-        dom.style.transform = `scale(${size}) translateX(${tmpX / size}px) translateY(${tmpY / size}px)`
+        dom.style.transform = `scale(${size}) translateX(${
+          tmpX / size
+        }px) translateY(${tmpY / size}px)`
         if (flagX && flagY) {
           return
         }
@@ -133,7 +148,6 @@
     }
     //@ts-ignore
     dom.style.zoom = flag
-    let ctx = dom.getContext('2d')
     let sty = ''
     console.log(tmp)
     for (let i = 0; i < tmp.length; i++) {
@@ -146,7 +160,11 @@
       )
       let title = tmp[i].img.title
       title = title.replaceAll('.', '_').replaceAll(' ', '_')
-      sty += `{name: ${title}} {  object-fit: none;  object-position:-${tmp[i].fit.x}px -${tmp[i].fit.y}px;  width: ${tmp[i].w}px;  height: ${tmp[i].h}px;}\n`
+      sty += `{name: ${title}} {  object-fit: none;  object-position:-${
+        tmp[i].fit.x
+      }px -${tmp[i].fit.y}px;  width: ${tmp[i].w - span}px;  height: ${
+        tmp[i].h - span
+      }px;}\n`
     }
     if (tmp.length) {
       putCanvasImg(dom.toDataURL())
@@ -156,9 +174,9 @@
 
   function styleHandle(str: string) {
     if (str.length) {
-        havCss = true
+      havCss = true
     } else {
-        havCss = false
+      havCss = false
     }
     let dom = document.querySelector('.style .content')
     dom?.replaceChildren()
@@ -225,8 +243,19 @@
   <div class="style">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div class="title" on:click={showCss} style={!havCss ? 'display: none' : ''}>Css</div>
-    <div class="content" style={`height:${showStyle ? '300px' : '0'}; padding: ${showStyle ? '10px': '0 10px'}`}></div>
+    <div
+      class="title"
+      on:click={showCss}
+      style={!havCss ? 'display: none' : ''}
+    >
+      Css
+    </div>
+    <div
+      class="content"
+      style={`height:${showStyle ? '300px' : '0'}; padding: ${
+        showStyle ? '10px' : '0 10px'
+      }`}
+    />
   </div>
 </div>
 
@@ -279,10 +308,10 @@
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     transform: skew(2deg) translateY(21px);
-    transition: transform .2s;
+    transition: transform 0.2s;
     cursor: pointer;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-    margin: 0 10px
+    margin: 0 10px;
   }
 
   .style .title:hover {
@@ -297,7 +326,7 @@
     padding: 0 10px;
     overflow: auto;
     height: 0;
-    transition: height .2s;
+    transition: height 0.2s;
     white-space: pre-wrap;
   }
 

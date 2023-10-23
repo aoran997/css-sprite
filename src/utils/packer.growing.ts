@@ -63,16 +63,12 @@ class GrowingPacker {
   root: any
   node: any
   span: number = 0
-  maxWidth = 0
-  maxHeight = 0
 
   fit(blocks: string | any[], span: number) {
     this.span = span
     var n, node, block, len = blocks.length;
     var w = len > 0 ? blocks[0].w : 0;
     var h = len > 0 ? blocks[0].h : 0;
-    this.maxWidth = w
-    this.maxHeight = h
     this.root = { x: 0, y: 0, w: w, h: h };
     for (n = 0; n < len ; n++) {
       block = blocks[n];
@@ -124,7 +120,7 @@ class GrowingPacker {
       used: true,
       x: 0,
       y: 0,
-      w: this.maxWidth + w,
+      w: this.root.w + w,
       h: this.root.h,
       down: this.root,
       right: { x: this.root.w, y: 0, w: w, h: this.root.h }
@@ -142,7 +138,7 @@ class GrowingPacker {
       x: 0,
       y: 0,
       w: this.root.w,
-      h: this.maxHeight + h,
+      h: this.root.h + h,
       down:  { x: 0, y: this.root.h, w: this.root.w, h: h },
       right: this.root
     };
