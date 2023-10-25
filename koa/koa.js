@@ -12,7 +12,7 @@ let needWrite = ['/', '/index.html']
 
   app.use(async (ctx, next) => {
     if (needWrite.includes(ctx.URL.pathname)) {
-      var ip = ctx.headers['x-forwarded-for'] || ctx.header.forwarded || ctx.ip
+      var ip = ctx.headers['X-Forwarded-For'] || ctx.header.forwarded || ctx.ip
       if (ip.startsWith('::ffff:')) {
         ip = ip.substring(7)
       }
